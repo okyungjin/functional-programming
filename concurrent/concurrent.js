@@ -4,12 +4,16 @@ function* map(f, iter) {
   }
 }
 
-// FIXME: remove to spread iter
 function* chunk(iter, n) {
-  const _iter = [...iter];
-  while (_iter.length) {
-    yield _iter.splice(0, n);
+  let cur = [];
+  for (const a of iter) {
+    cur.push(a);
+    if (cur.length === n) {
+      yield cur;
+      cur = [];
+    }
   }
+  return cur;
 }
 
 async function reduceAsync(f, acc, iter) {
