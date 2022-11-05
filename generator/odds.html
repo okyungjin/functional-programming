@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Generator</title>
+</head>
+<body>
+# odds
+<script>
+  function *odds(l) {
+    for (let i = 0; i < l; i++) {
+      if (i % 2) yield i;
+    }
+  }
+
+  // for (const a of odds(10)) console.log(a);
+</script>
+
+# odds 개선 (infinity 적용)
+<script>
+  function *infinity(start = 0) {
+    while (true) yield start++;
+  }
+
+  function *odds(l) {
+    for (const a of infinity(1)) {
+      if (a % 2) yield a;
+      if (a === l) return;
+    }
+  }
+
+  // for (const a of odds(10)) console.log(a);
+</script>
+
+# odds 개선 (limit 적용)
+<script>
+  function *infinity(start = 0) {
+    while (true) yield start++;
+  }
+
+ function *limit(l, iter) {
+   for (const a of iter) {
+     yield a;
+     if (a === l) return;
+   }
+ }
+
+ function *odds(l) {
+   for (const a of limit(l, infinity(1))) {
+     if (a % 2) yield a;
+   }
+ }
+
+  for (const a of odds(10)) console.log(a);
+</script>
+</body>
+</html>
