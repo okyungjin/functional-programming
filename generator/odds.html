@@ -8,6 +8,9 @@
   <title>Generator</title>
 </head>
 <body>
+<script>
+  const log = console.log;
+</script>
 # odds
 <script>
   function *odds(l) {
@@ -16,7 +19,7 @@
     }
   }
 
-  // for (const a of odds(10)) console.log(a);
+  // for (const a of odds(10)) log(a);
 </script>
 
 # odds 개선 (infinity 적용)
@@ -32,7 +35,7 @@
     }
   }
 
-  // for (const a of odds(10)) console.log(a);
+  // for (const a of odds(10)) log(a);
 </script>
 
 # odds 개선 (limit 적용)
@@ -54,7 +57,30 @@
    }
  }
 
-  for (const a of odds(10)) console.log(a);
+  const iter = odds(10);
+  log(iter.next());
+  log(iter.next());
+  log(iter.next());
+  log(iter.next());
+  log(iter.next());
+  log(iter.next());
+
+  for (const a of odds(10)) log(a);
+</script>
+
+# for of, 전개 연산자, 구조 분해, 나머지 연산자
+<script>
+  log(...odds(10));
+  log([...odds(10), odds(20)]);
+
+  const [head, ...tail] = odds(5);
+  log(head);
+  log(tail);
+
+  const [a, b, ...rest] = odds(10);
+  log(a);
+  log(b);
+  log(rest);
 </script>
 </body>
 </html>
