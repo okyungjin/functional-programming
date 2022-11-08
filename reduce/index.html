@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Reduce</title>
+</head>
+<body>
+<script>const log = console.log;</script>
+
+# reduce
+- 값을 하나로 축약하는 함수
+
+# reduce 명령형 코드
+<script>
+  log('======== reduce 명령형 코드 ========');
+
+  const nums = [1, 2, 3, 4, 5];
+  let total = 0;
+
+  for (const n of nums) {
+    total = total + n;
+  }
+  log(total);
+</script>
+
+# reduce 함수의 외부 인터페이스
+<script>
+  log('======== reduce 함수의 외부 인터페이스 ========');
+
+  let reduce = () => {};
+
+  const add = (a, b) => a + b;
+  log(reduce(add, 0, [1, 2, 3, 4, 5])); // 15
+
+  // reduce는 재귀적으로 실행되도록 구현해야 한다.
+  log(add(add(add(add(add(0, 1), 2), 3), 4), 5));
+</script>
+
+# reduce 함수형 코드
+<script>
+  log('======== reduce 함수형 코드 ========');
+
+  reduce = (f, acc, iter) => {
+    for (const a of iter) {
+      acc = f(acc, a); // 보조함수 f에게 위임
+    }
+    return acc;
+  };
+
+  log(reduce(add, 0, nums));
+</script>
+
+# reduce에 시작하는 값이 주어지지 않았을 경우 처리
+<script>
+  log('======== reduce에 시작하는 값이 주어지지 않았을 경우 처리 ========');
+
+  // 자바스크립트에서는 아래 코드처럼 시작하는 값이 주어지지 않은 경우, 아래의 코드처럼 동작하도록 한다.
+  log(reduce2(add, [1, 2, 3, 4, 5]));
+  log(reduce(add, 1, [2, 3, 4, 5]));
+
+  function reduce2(f, acc, iter) {
+    if (!iter) {
+      iter = acc[Symbol.iterator]();
+      acc = iter.next().value;
+    }
+    for (const a of iter) {
+      acc = f(acc, a); // 어떻게 축약할지를 보조함수 f에게 완전히 위임
+    }
+    return acc;
+  }
+</script>
+
+# ex. products의 price 축약
+<script>
+  log('======== ex. products의 price 축약 ========');
+
+  const products = [
+    { name: '반팔티', price: 15_000 },
+    { name: '긴팔티', price: 20_000 },
+    { name: '핸드폰 케이스', price: 15_000 },
+    { name: '후드티', price: 30_000 },
+    { name: '바지', price: 25_000 },
+  ];
+
+  log(
+    reduce(
+      (totalPrice, product) => totalPrice + product.price,
+      0,
+      products));
+</script>
+</body>
+</html>
