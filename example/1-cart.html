@@ -54,18 +54,14 @@
         <th>수량</th>
         <th>총 가격</th>
       </tr>
-      ${go(
-        products,
-        map(p => `
-          <tr>
-            <td>${p.name}</td>
-            <td>${p.price}</td>
-            <td><input type="number" value="${p.quantity}"></td>
-            <td>${p.price * p.quantity}</td>
-          </tr>
-        `),
-        reduce(add)
-      )}
+      ${go(products, sum(p => `
+        <tr>
+          <td>${p.name}</td>
+          <td>${p.price}</td>
+          <td><input type="number" value="${p.quantity}"></td>
+          <td>${p.price * p.quantity}</td>
+        </tr>
+      `))}
       <tr>
         <td colspan="2">합계</td>
         <td>${total_quantity(products)}</td>
