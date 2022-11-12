@@ -45,6 +45,34 @@
     { age: 20 },
     { age: 10 },
   ]));
+
+  document.querySelector('#cart').innerHTML = `
+    <table>
+      <tr>
+        <th>상품 이름</th>
+        <th>가격</th>
+        <th>수량</th>
+        <th>총 가격</th>
+      </tr>
+      <tr>
+        <td>반팔티</td>
+        <td>10000</td>
+        <td><input type="number" value="3"></td>
+        <td>30000</td>
+      </tr>
+      <tr>
+        <td>반팔티</td>
+        <td>10000</td>
+        <td><input type="number" value="3"></td>
+        <td>30000</td>
+      </tr>
+      <tr>
+        <td colspan="2">합계</td>
+        <td>6</td>
+        <td>60000</td>
+      </tr>
+    </table>
+  `
 </script>
 
 </body>
