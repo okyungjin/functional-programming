@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>07. 지연성</title>
+  <script src="../lib/fx.js"></script>
+</head>
+<body>
+## range
+<script>
+  log('===== range =====');
+
+  const add = (a, b) => a + b;
+
+  // array를 다 만든 다음에 배열로 return 한다.
+  const range = l => {
+    let i = -1;
+    let res = [];
+    while (++i < l) {
+      log(i, 'range');
+      res.push(i);
+    }
+    return res;
+  };
+
+  log(range(5));
+  // [0, 1, 2, 3, 4]
+
+  log(range(2));
+  // [0, 1]
+
+  var list = range(4);
+  log(list);
+  // log(reduce(add, list));
+</script>
+
+## 느긋한 L.range
+<script>
+  log('===== 느긋한 L.range =====');
+
+  const L = {};
+
+  L.range = function *(l) {
+    log('hi~~');
+    let i = -1;
+    while (++i < l) {
+      log(i, 'L.range');
+      yield i;
+    }
+  };
+
+  var list = L.range(4);
+  log(list); // L.range는 여기까지 실행되었을 때 어떤 코드도 평가가 되지 않은 시점이다.
+
+  log(list.next());
+  log(list.next());
+  log(list.next());
+  // log(reduce(add, list));
+</script>
+</body>
+</html>
