@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>HTML 출력해보기 - 장바구니</title>
+  <script src="../lib/fx.js"></script>
+</head>
+<body>
+<div id="cart"></div>
+
+<script>
+  const products = [
+    { name: '반팔티', price: 15_000, quantity: 1 },
+    { name: '긴팔티', price: 20_000, quantity: 2 },
+    { name: '핸드폰 케이스', price: 15_000, quantity: 3 },
+    { name: '후드티', price: 30_000, quantity: 4 },
+    { name: '바지', price: 25_000, quantity: 5 },
+  ];
+
+  // 합산 재고 만들어보기
+  const total_quantity = pipe(
+    map(p => p.quantity),
+    reduce((a, b) => a + b));
+
+  log(total_quantity(products));
+
+
+  // 합산 금액 만들어보기
+  const total_price = pipe(
+    map(p => p.price * p.quantity),
+    reduce((a, b) => a + b));
+
+  log(total_price(products));
+
+
+</script>
+
+</body>
+</html>
