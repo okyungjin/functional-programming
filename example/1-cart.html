@@ -20,10 +20,12 @@
     { name: '바지', price: 25_000, quantity: 5 },
   ];
 
+  const add = (a, b) => a + b;
+
   // 합산 재고 만들어보기
   const total_quantity = pipe(
     map(p => p.quantity),
-    reduce((a, b) => a + b));
+    reduce(add));
 
   log(total_quantity(products));
 
@@ -31,7 +33,7 @@
   // 합산 금액 만들어보기
   const total_price = pipe(
     map(p => p.price * p.quantity),
-    reduce((a, b) => a + b));
+    reduce(add));
 
   log(total_price(products));
 
