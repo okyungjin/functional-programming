@@ -54,18 +54,18 @@
         <th>수량</th>
         <th>총 가격</th>
       </tr>
-      <tr>
-        <td>반팔티</td>
-        <td>10000</td>
-        <td><input type="number" value="3"></td>
-        <td>30000</td>
-      </tr>
-      <tr>
-        <td>반팔티</td>
-        <td>10000</td>
-        <td><input type="number" value="3"></td>
-        <td>30000</td>
-      </tr>
+      ${go(
+        products,
+        map(p => `
+          <tr>
+            <td>${p.name}</td>
+            <td>${p.price}</td>
+            <td><input type="number" value="${p.quantity}"></td>
+            <td>${p.price * p.quantity}</td>
+          </tr>
+        `),
+        reduce(add)
+      )}
       <tr>
         <td colspan="2">합계</td>
         <td>${total_quantity(products)}</td>
