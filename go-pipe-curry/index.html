@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>go</title>
+</head>
+<body>
+<script src="/lib/fx.js"></script>
+# 코드를 값으로 다루어 표현력 높이기
+## go, pipe
+<script>
+  /**
+   * 함수들과 인자를 전달해서 값을 즉시 평가하는데 사용된다.
+   */
+  const go = (...args) => reduce((a, f) => f(a), args);
+
+  /**
+   * go 함수와 다르게 함수를 리턴하는 함수이다.
+   * pipe는 함수들이 나열되어 있는 합성된 함수를 만드는 함수이다.
+   */
+  const pipe = (...fs) => (a) => go(a, ...fs);
+
+  go(
+    0,
+    a => a + 1,
+    a => a + 10,
+    a => a + 100,
+    log);
+  // 111
+
+  // 인자 3개의 함수를 연속적으로 실행하면서 축약하는 하나의 함수 f
+  const f = pipe(
+    a => a + 1,
+    a => a + 10,
+    a => a + 100);
+
+  log(f(0));
+</script>
+
+### pipe 개선하기
+- go의 첫 번째 인자로 add(0, 1) 등을 넣을 수 있도록 개선해보자.
+<script>
+  const add = (a, b) => a + b;
+  const pipe2 = (f, ...fs) => (...as) => go(f(...as), ...fs);
+
+  // go 함수는 시작하는 인자가 2개여야 할 때 다음과 같이 작성할 수 있다.
+  // 평가해서 1로 시작하도록 할 수 있다.
+  go(
+    add(0, 1),
+    a => a + 10,
+    a => a + 100,
+    log);
+
+  const f2 = pipe2(
+    (a, b) => a + b,
+    a => a + 10,
+    a => a + 100,
+  );
+
+  log(f2(0, 1));
+</script>
+
+### go를 사용하여 읽기 좋은 코드로 만들기
+<script>
+  log('===== go를 사용하여 읽기 좋은 코드로 만들기 =====');
+
+  const products = [
+    { name: '반팔티', price: 15_000 },
+    { name: '긴팔티', price: 20_000 },
+    { name: '핸드폰 케이스', price: 15_000 },
+    { name: '후드티', price: 30_000 },
+    { name: '바지', price: 25_000 },
+  ];
+
+  // 이전의 코드보다 양이 늘어나긴 했지만, 읽기는 더 좋아졌다. (순차적으로 읽힘)
+  go(
+    products,
+    products => filter(p => p.price < 20_000, products),
+    products => map(p => p.price, products),
+    prices => reduce(add, prices),
+    log);
+</script>
+
+## curry
+<script>
+  log('===== curry =====');
+  /**
+   * 함수를 값으로 다루면서 받아둔 함수를 내가 원하는 시점에 평가시키는 함수
+   * curry는 함수를 받아서 함수를 리턴하고, 인자를 받아서 인자가 원하는 만큼의 개수가 들어왔을 때 받아두었던 함수를 나중에 평가시키는 함수
+   */
+  // const curry = f =>
+  //   (a, ..._) => _.length     // 인자가 2개 이상이라면
+  //     ? f(a, ..._)            // 받아둔 함수를 즉시 실행
+  //     : (..._) => f(a, ..._); // 2개보다 작다면, 그 이후에 받은 인자를 합쳐서 실행
+
+  const mult = curry((a, b) => a * b);
+  log(mult(1)(2));
+
+  const mult3 = mult(3);
+  log(mult3(10));
+  log(mult3(5));
+  log(mult3(3));
+
+  // before
+  log(
+    reduce(
+      add,
+      map(p => p.price,
+        filter(p => p.price < 20_000, products))));
+
+  // curry로 감싸서 가독성 높이기
+  go(
+    products,
+    products => filter(p => p.price < 20_000)(products),
+    products => map(p => p.price)(products),
+    prices => reduce(add)(prices),
+    log);
+
+  // after
+  // 1.go 함수로 순서를 뒤집기
+  // 2. curry로 보다 간결한 표현으로 만들기
+  go(
+    products,
+    filter(p => p.price < 20_000),
+    map(p => p.price),
+    reduce(add),
+    log);
+</script>
+
+# 함수 조합으로 함수 만들기
+<script>
+  log('===== 함수 조합으로 함수 만들기 =====');
+
+  const total_price = pipe(
+    map(p => p.price),
+    reduce(add));
+
+  const base_total_price = predi => pipe(
+    filter(predi),
+    total_price);
+
+  go(
+    products,
+    base_total_price(p => p.price < 20_000),
+    log);
+
+  go(
+    products,
+    base_total_price(p => p.price >= 20_000),
+    log);
+</script>
+</body>
+</html>
