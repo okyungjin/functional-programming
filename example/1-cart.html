@@ -22,22 +22,21 @@
 
   const add = (a, b) => a + b;
 
-  // 합산 재고 만들어보기
-  const total_quantity = pipe(
-    map(p => p.quantity),
+  const sum = (f, iter) => go(
+    iter,
+    map(f), // 이 부분을 완전히 위임
     reduce(add));
+
+  // 합산 재고 만들어보기
+  const total_quantity = products => sum(p => p.quantity, products);
 
   log(total_quantity(products));
 
 
   // 합산 금액 만들어보기
-  const total_price = pipe(
-    map(p => p.price * p.quantity),
-    reduce(add));
+  const total_price = products => sum(p => p.price * p.quantity, products);
 
   log(total_price(products));
-
-
 </script>
 
 </body>
