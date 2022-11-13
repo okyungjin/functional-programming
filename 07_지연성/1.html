@@ -104,12 +104,12 @@
 
   // L.range를 사용할 때는 무한 수열로 만들어도 된다.
   // 일반 range를 사용하면 브라우저가 죽는다.
-  console.time('L.range Infinity');
+  // L.range에서는 연산을 미루다가 take, reduce 같은 로직을 만나면 연산을 시작한다.
   go(
     L.range(Infinity),
     take(5),
+    reduce(add),
     log);
-  console.timeEnd('L.range Infinity');
 </script>
 </body>
 
