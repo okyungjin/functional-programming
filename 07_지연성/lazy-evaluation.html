@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="../lib/fx.js"></script>
+  <title>Lazy Evaluation</title>
+</head>
+<body>
+# 이터러블 중심 프로그래밍에서의 지연 평가 (Lazy Evaluation)
+- 제때 계산법
+- 느긋한 계산법
+- 제너레이터/이터레이터 프로토콜을 기반으로 구현
+
+## L.map
+<script>
+  const L = {};
+
+  L.map = function *(f, iter) {
+    log(1)
+    for (const a of iter) yield f(a);
+  }
+
+  /**
+   * 여기서 L.map을 한 것으로는 코드가 평가되지 않는다.
+   * next()를 통해 평가하려는 부분의 값만 얻어올 수 있다.
+   */
+  L.map([1, 2, 3]);
+
+  const it = L.map(a => a + 10, [1, 2, 3]);
+  log(it.next());
+  log(it.next());
+  log(it.next());
+  log(it.next());
+</script>
+
+## L.filter
+<script>
+
+</script>
+
+## map, filter 계열 함수들이 가지는 결합 법칙
+<script>
+
+</script>
+</body>
+</html>
