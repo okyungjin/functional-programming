@@ -5,7 +5,7 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>07. 지연성</title>
+  <title>range와 느긋한 L.range</title>
   <script src="../lib/fx.js"></script>
 </head>
 <body>
@@ -73,43 +73,6 @@
 
   test('range', 10, () => reduce(add, range(1_000_000)));
   test('L.range', 10, () => reduce(add, L.range(1_000_000)));
-  console.clear();
-</script>
-
-## take
-<script>
-  const take = curry((l, iter) => {
-    let res = [];
-    for (const a of iter) {
-      res.push(a);
-      if (res.length === l) return res;
-    }
-    return res;
-  });
-
-  console.time('range');
-  go(
-    range(1_000_000),
-    take(5),
-    log);
-  console.timeEnd('range');
-
-  console.time('L.range');
-  // 5개의 값만 만들기때문에 훨씬 효율적이다.
-  go(
-    L.range(1_000_000),
-    take(5),
-    log);
-  console.timeEnd('L.range');
-
-  // L.range를 사용할 때는 무한 수열로 만들어도 된다.
-  // 일반 range를 사용하면 브라우저가 죽는다.
-  // L.range에서는 연산을 미루다가 take, reduce 같은 로직을 만나면 연산을 시작한다.
-  go(
-    L.range(Infinity),
-    take(5),
-    reduce(add),
-    log);
 </script>
 </body>
 
