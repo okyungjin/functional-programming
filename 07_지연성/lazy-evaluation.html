@@ -16,6 +16,8 @@
 
 ## L.map
 <script>
+  log('===== L.map =====');
+
   const L = {};
 
   L.map = function *(f, iter) {
@@ -38,7 +40,18 @@
 
 ## L.filter
 <script>
+  log('===== L.filter =====');
 
+  L.filter = function *(f, iter) {
+    for (const a of iter) {
+      if (f(a)) yield a;
+    }
+  };
+
+  const it2 = L.filter(a => a % 2, [1, 2, 3, 4]);
+  log(it2.next());
+  log(it2.next());
+  log(it2.next());
 </script>
 
 ## map, filter 계열 함수들이 가지는 결합 법칙
