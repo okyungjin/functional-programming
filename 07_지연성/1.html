@@ -73,6 +73,33 @@
 
   test('range', 10, () => reduce(add, range(1_000_000)));
   test('L.range', 10, () => reduce(add, L.range(1_000_000)));
+  console.clear();
+</script>
+
+## take
+<script>
+  const take = (l, iter) => {
+    let res = [];
+    for (const a of iter) {
+      res.push(a);
+      if (res.length === l) return res;
+    }
+    return res;
+  };
+
+  console.time('range');
+  log(take(5, range(1_000_000)));
+  console.timeEnd('range');
+
+  console.time('L.range');
+  log(take(5, L.range(1_000_000))); // 5개의 값만 만들기때문에 훨씬 효율적이다.
+  console.timeEnd('L.range');
+
+  // L.range를 사용할 때는 무한 수열로 만들어도 된다.
+  // 일반 range를 사용하면 브라우저가 죽는다.
+  console.time('L.range Infinity');
+  log(take(5, L.range(Infinity)));
+  console.timeEnd('L.range Infinity');
 </script>
 </body>
 
