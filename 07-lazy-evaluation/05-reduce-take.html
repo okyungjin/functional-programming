@@ -5,10 +5,52 @@
 ### reduce
 <script>
   // 이러한 방식으로 사고하는 것을 익혀야 한다!
-  const queryStr = pipe(
+  var queryStr = pipe(
     Object.entries,
     map(([k, v]) => `${k}=${v}`),
     reduce((a, b) => `${a}&${b}`)
+  );
+  log(queryStr({ limit: 10, offset: 10, type: 'notice' }));
+
+
+  // join 함수를 만들어서 코드를 단순하게 만들기
+  const join = curry((sep = ',', iter) =>
+    reduce((a, b) => `${a}${sep}${b}`, iter));
+
+  var queryStr = pipe(
+    Object.entries,
+    map(([k, v]) => `${k}=${v}`),
+    join('&')
+  );
+  log(queryStr({ limit: 10, offset: 10, type: 'notice' }));
+
+  // Array.prototype.join 보다 다형성이 높은 join 함수
+  // - Array.prototype.join은 배열에만 사용할 수 있으므로, 제너레이터 함수에 적용하지는 못한다
+  // - join은 이터러블에 사용할 수 있으므로 조합성이 더욱 좋다.
+  // - join이 이터러블 프로토콜을 따른다는 의미는 지연 평가되는 함수도 사용할 수 있다는 것이다.
+  function *a() {
+    yield 10;
+    yield 11;
+    yield 12;
+    yield 13;
+  }
+  // a().join(','); // 오류 발생
+  log(join(',', a())); // 가능하다
+
+  // L.map을 사용해도 된다.
+  L.entries = function *(obj) {
+    for (const k in obj) yield [k, obj[k]];
+  }
+  // var it = L.entries({ limit: 10, offset: 10, type: 'notice' });
+  // it.next();
+  // it.next();
+  // it.next();
+
+  var queryStr = pipe(
+    L.entries,
+    L.map(([k, v]) => `${k}=${v}`),
+    // a => (console.log(a), a),
+    join('&'),
   );
   log(queryStr({ limit: 10, offset: 10, type: 'notice' }));
 </script>
