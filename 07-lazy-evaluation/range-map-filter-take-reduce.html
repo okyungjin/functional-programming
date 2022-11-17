@@ -1,0 +1,57 @@
+<script src="../lib/fx.js"></script>
+
+### range, map, filter, take, reduce 중첩 사용
+<script>
+  go(range(10),
+    map(n => n + 10),
+    filter(n => n % 2),
+    take(2),
+    log); // [11, 13]
+</script>
+
+### L.range, L.map, L.filter, take, reduce 중첩 사용
+<script>
+  go(L.range(10),
+    L.map(n => n + 10),
+    L.filter(n => n % 2),
+    take(2),
+    log); // [11, 13]
+</script>
+
+---
+### for (const a of iter) 분석
+- map 내부의 `for (const a of iter)`를 분석해보자.
+- map 외의 함수들에도 적용하면 동일하게 동작한다.
+<script>
+  const _map = curry((f, iter) => {
+    let res = [];
+    iter = iter[Symbol.iterator]();
+    let cur;
+    while (!((cur = iter.next()).done)) {
+      const a = cur.value;
+      res.push(f(a));
+    }
+    return res;
+  });
+
+  const _reduce = curry((f, acc, iter) => {
+    if (!iter) {
+      iter = acc[Symbol.iterator]();
+      acc = iter.next().value;
+    } else {
+      iter = iter[Symbol.iterator]();
+    }
+    let cur;
+    while (!(cur = iter.next()).done) {
+      acc = f(acc, a);
+    }
+    return acc;
+  });
+
+  // 확인해보면 for (const a of iter) 와 결과가 같다.
+  go(range(10),
+    _map(n => n + 10),
+    filter(n => n % 2),
+    take(2),
+    log); // [11, 13]
+</script>
