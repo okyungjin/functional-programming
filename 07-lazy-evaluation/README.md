@@ -1,5 +1,8 @@
-## 지연성
-### L.range, L.map, L.filter, take 의 평가 순서
+# 지연성
+- [L.range, L.map, L.filter, take 의 평가 순서](#lrange-lmap-lfilter-take-의-평가-순서)
+- [즉시 평가 함수 vs 지연 평가 함수](#즉시-평가-함수-vs-지연-평가-함수)
+
+## L.range, L.map, L.filter, take 의 평가 순서
 `take`, `L.filter`, `L.map`, `L.range`에 breakpoint가 설정되어 있다면, 어떤 함수에 가장 먼저 걸릴까?  
 ```js
 go(L.range(10),
@@ -13,7 +16,7 @@ go(L.range(10),
 
 <br>
 
-### 동작 비교
+## 즉시 평가 함수 vs 지연 평가 함수
 <table>
 <thead>
   <tr>
@@ -95,3 +98,5 @@ false   true  ...
 
 </tbody>
 </table> 
+
+
