@@ -18,7 +18,6 @@
     log); // [11, 13]
 </script>
 
----
 ### for (const a of iter) 분석
 - map 내부의 `for (const a of iter)`를 분석해보자.
 - map 외의 함수들에도 적용하면 동일하게 동작한다.
@@ -54,4 +53,23 @@
     filter(n => n % 2),
     take(2),
     log); // [11, 13]
+</script>
+
+### 엄격한 계산과 느긋한 계산의 효율성 비교
+<script>
+  console.time('');
+  go(range(10_000),
+    map(n => n + 10),
+    filter(n => n % 2),
+    take(10),
+    log);
+  console.timeEnd(''); // : 2.360107421875 ms
+
+  console.time('L');
+  go(L.range(10_000),
+    L.map(n => n + 10),
+    L.filter(n => n % 2),
+    take(10),
+    log);
+  console.timeEnd('L'); // L: 0.119873046875 ms
 </script>
