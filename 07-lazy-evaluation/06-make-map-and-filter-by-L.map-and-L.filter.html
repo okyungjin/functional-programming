@@ -1,6 +1,6 @@
 <script src="../lib/fx.js"></script>
 
-L.map, L.filter로 map과 filter 만들기
+### L.map으로 map 만들기
 <script>
   L.map = curry(function *(f, iter) {
     iter = iter[Symbol.iterator]();
@@ -26,4 +26,30 @@ L.map, L.filter로 map과 filter 만들기
   const _map = curry(pipe(L.map, take(Infinity)));
 
   log(_map(a => a + 10, L.range(4)));
+</script>
+
+### L.filter로 filter 만들기
+<script>
+  L.filter = curry(function *(f, iter) {
+    iter = iter[Symbol.iterator]();
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      if (f(a)) yield a;
+    }
+  })
+
+  const origin_filter = curry((f, iter) => {
+    const res = [];
+    iter = iter[Symbol.iterator]();
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      if (f(a)) res.push(a);
+    }
+  });
+
+  const _filter = curry(pipe(L.filter, take(Infinity)));
+
+  log(_filter(a => a % 2, range(4)));
 </script>
