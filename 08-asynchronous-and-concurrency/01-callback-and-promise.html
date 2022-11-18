@@ -1,0 +1,35 @@
+<script src="../lib/fx.js"></script>
+
+# Promise
+## 일급
+<script>
+  // callback
+  function add10(a, callback) {
+    setTimeout(() => callback(a + 10), 100);
+  }
+
+  /**
+   * 콜백 패턴은 함수의 depth가 늘어나기 때문에 가독성이 떨어진다는 단점이 있다.
+   */
+  add10(5, res => {
+    add10(res, res => {
+      add10(res, res => {
+        log(res);
+      });
+    });
+  });
+
+  // Promise
+  function add20(a) {
+    // Promise 패턴은 프로미스를 return한다.
+    return new Promise(resolve => setTimeout(() => resolve(a + 20), 100));
+  }
+
+  /**
+   * 프로미스는 간단한 구문으로 연속적으로 실행할 수 있다.
+   */
+  add20(5)
+    .then(add20)
+    .then(add20)
+    .then(log);
+</script>
