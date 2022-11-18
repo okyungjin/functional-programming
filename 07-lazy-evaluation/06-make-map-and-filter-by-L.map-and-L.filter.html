@@ -23,10 +23,7 @@ L.map, L.filter로 map과 filter 만들기
   }
 
   // L.map을 사용하여 구현한 map
-  const _map = curry((f, iter) => go(
-    L.map(f, iter),
-    take(Infinity),
-  ));
+  const _map = curry(pipe(L.map, take(Infinity)));
 
   log(_map(a => a + 10, L.range(4)));
 </script>
