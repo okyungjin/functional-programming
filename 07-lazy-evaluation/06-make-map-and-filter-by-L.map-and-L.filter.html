@@ -22,8 +22,10 @@
     return res;
   }
 
+  const takeAll = take(Infinity);
+
   // L.map을 사용하여 구현한 map
-  const _map = curry(pipe(L.map, take(Infinity)));
+  const _map = curry(pipe(L.map, takeAll));
 
   log(_map(a => a + 10, L.range(4)));
 </script>
@@ -49,7 +51,7 @@
     }
   });
 
-  const _filter = curry(pipe(L.filter, take(Infinity)));
+  const _filter = curry(pipe(L.filter, takeAll));
 
   log(_filter(a => a % 2, range(4)));
 </script>
