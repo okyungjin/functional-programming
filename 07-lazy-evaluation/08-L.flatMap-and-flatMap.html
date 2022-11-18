@@ -1,0 +1,48 @@
+<script src="../lib/fx.js"></script>
+
+## L.flatMap
+<script>
+  log('====== L.flatMap ======');
+  // js 기본 flatMap
+  log([[1, 2], [3, 4], [5, 6, 7]].flatMap(a => a));
+  log([[1, 2], [3, 4], [5, 6, 7]].flatMap(a => a.map(a => a * a)));
+
+  /**
+   * flatMap은 map한 결과를 flatten한 것과 동일하다.
+   * 그럼 flatMap은 필요 없나? No. map하고 flatten하는 로직은 비효율적이라 flatMap이 필요하다.
+   * map으로 순회한 다음에 그걸 다시 배열에 담는 약간의 비효율이 빌생한다.
+   * but 이 예시에서는 시간 복잡도 면에서는 차이가 없다. 따라서 효율적으로 큰 이득은 없다.
+   * (경우에 따라 효율이 커질 수 있음)
+   */
+  log(flatten([[1, 2], [3, 4], [5, 6, 7]].map(a => a.map(a => a * a))));
+
+  /**
+   * flatMap은 배열에만 적용할 수 있으므로, 확장성을 높여 이터러블에서 사용할 수 있는 flatMap을 만들어보자.
+   */
+  L.flatMap = curry(pipe(L.map, L.flatten));
+
+  var it = L.flatMap(a => a, [[1, 2], [3, 4], [5, 6, 7]]);
+  log([...it]);
+
+  var it = L.flatMap(L.range, map(a => a + 1, [1, 2, 3]));
+  log(it.next());
+  log(it.next());
+  log(it.next());
+
+  log(
+    take(3,
+      L.flatMap(L.range,
+        map(a => a + 1, [1, 2, 3]))));
+</script>
+
+## flatMap
+<script>
+  log('====== flatMap ======');
+
+  const flatMap = curry(pipe(L.map, flatten));
+  // const flatMap = curry(pipe(L.map, L.flatten, takeAll)); // 동일
+
+  log(flatMap(a => a, [[1, 2], [3, 4], [5, 6, 7]]))
+
+  log(flatMap(range, map(a => a  + 1, [1, 2, 3])));
+</script>
