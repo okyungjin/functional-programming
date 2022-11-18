@@ -25,6 +25,18 @@
       L.flatten([[1, 2], 3, 4, [5, 6], [7, 8, 9]])));
 </script>
 
+## L.deepFlat
+<script>
+  L.deepFlat = function *f(iter) {
+    for (const a of iter) {
+      if (isIterable(a)) yield *f(a);
+      else yield a;
+    }
+  };
+
+  log([...L.deepFlat([1, [2, [3, 4], [[5]]]])]);
+</script>
+
 ## flatten
 - L.flatten으로 쉽게 flatten을 만들 수 있다.
 <script>
