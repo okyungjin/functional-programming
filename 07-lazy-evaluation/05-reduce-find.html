@@ -54,3 +54,34 @@
   );
   log(queryStr({ limit: 10, offset: 10, type: 'notice' }));
 </script>
+
+### take, find
+- find: 조건을 만족하는 가장 첫 번째 요소를 찾는 함수
+- take 함수를 사용하여 find 만들기
+<script>
+  const users = [
+    { age: 32 },
+    { age: 31 },
+    { age: 37 },
+    { age: 28 },
+    { age: 25 },
+    { age: 32 },
+    { age: 31 },
+    { age: 37 },
+  ];
+
+  const find = curry((f, iter) => go(
+    iter,
+    L.filter(f),
+    // L.filter(a => (console.log(a), f(a))),
+    take(1),
+    ([a]) => a, // 구조분해헤서 꺼내기
+  ));
+
+  log(find(u => u.age < 30, users));
+
+  go(users,
+    L.map(u => u.age),
+    find(n => n < 30),
+    log);
+</script>
