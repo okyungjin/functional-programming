@@ -1,0 +1,19 @@
+<script src="../lib/fx.js"></script>
+
+## 2차원 배열 다루기
+<script>
+  const arr = [
+    [1, 2],
+    [3, 4, 5],
+    [6, 7, 8], // 순회하지 않음
+    [9, 10], // 순회하지 않음
+  ];
+
+  go(arr,
+    L.flatten, // 지연
+    L.filter(a => a % 2), // 지연
+    L.map(a => a * a),
+    take(4),
+    reduce(add),
+    log);
+</script>
