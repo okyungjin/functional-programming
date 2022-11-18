@@ -14,7 +14,7 @@
   const a = add10(5, res => {
     add10(res, res => {
       add10(res, res => {
-        log(res);
+        // log(res);
       });
     });
   });
@@ -37,7 +37,7 @@
   const b = add20(5)
     .then(add20)
     .then(add20)
-    .then(log);
+    // .then(log);
 
   log(b); // Promise라는 값이 출력된다.
 
@@ -47,4 +47,30 @@
    * 즉, 비동기 상황을 값으로 다룰 수 있다는 것이다. 이런 것을 "일급"이라고 한다.
    * 일급이라는 것은 어떤 변수에 할당될 수 있고, 함수로 전달될 수 있고, 전달된 값을 가지고 어떤 일들을 이어갈 수 있다는 점이 중요하다.
    */
+</script>
+
+## 일급 활용
+<script>
+  console.clear();
+
+  const delay100 = a => new Promise(resolve => setTimeout(() => resolve(a)), 100);
+
+  const go1 = (a, f) => f(a);
+  const add5 = a => a + 5;
+
+  log(go1(10, add5));
+  log(go1(delay100(10), add5));
+
+  /**
+   * 현재 코드에서 `go1`이 잘 동작하려면 인자 `a`에는 Promise가 아닌 값이 들어와야 한다.
+   * 위의 두 코드가 정상적으로 동작하도록 만들어보자.
+   */
+
+  const go2 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
+
+  const r1 = go2(10, add5);
+  log('r1', r1);
+
+  const r2 = go2(delay100(10), add5);
+  r2.then(a => log('r2', a));
 </script>
