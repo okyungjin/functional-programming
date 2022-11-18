@@ -81,19 +81,25 @@
   ];
 
   const getUserById = id =>
-    find(u => u.id === id, users);
+    find(u => u.id === id, users) || Promise.reject('Not Found!');
 
   const f = ({ name }) => name;
   const g = getUserById;
-  const fg = id => f(g(id));
+  const fg = id => Promise.resolve(id).then(g).then(f).catch(a => a);
 
-  const r = fg(2);
-  log(r);
+  fg(2).then(log);
 
   // 외부 세상에 변화가 발생
   users.pop();
   users.pop();
 
-  const r2 = fg(2);
-  log(r2);
+  g(2);
+
+  fg(2).then(log);
+
+  /**
+   * 잘못된 id가 들어왔으면 g, f 합성을 진행하지 않고,
+   * g에서 오류가 있으면 f 합성을 진행하지 않는다.
+   * catch에서 마무리만 해준다. 이런 것이 Kleisli Composition이다.
+   */
 </script>
