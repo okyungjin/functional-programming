@@ -24,8 +24,7 @@ L.map, L.filter로 map과 filter 만들기
 
   // L.map을 사용하여 구현한 map
   const _map = curry((f, iter) => go(
-    iter,
-    L.map(f),
+    L.map(f, iter),
     take(Infinity),
   ));
 
