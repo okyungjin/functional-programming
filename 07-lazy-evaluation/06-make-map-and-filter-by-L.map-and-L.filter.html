@@ -1,0 +1,33 @@
+<script src="../lib/fx.js"></script>
+
+L.map, L.filter로 map과 filter 만들기
+<script>
+  L.map = curry(function *(f, iter) {
+    iter = iter[Symbol.iterator]();
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      yield f(a);
+    }
+  });
+
+  const origin_map = (f, iter) => {
+    const res = [];
+    iter = iter[Symbol.iterator]();
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      res.push(f(a));
+    }
+    return res;
+  }
+
+  // L.map을 사용하여 구현한 map
+  const _map = curry((f, iter) => go(
+    iter,
+    L.map(f),
+    take(Infinity),
+  ));
+
+  log(_map(a => a + 10, L.range(4)));
+</script>
