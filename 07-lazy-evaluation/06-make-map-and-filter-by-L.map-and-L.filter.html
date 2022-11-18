@@ -3,10 +3,7 @@
 ### L.map으로 map 만들기
 <script>
   L.map = curry(function *(f, iter) {
-    iter = iter[Symbol.iterator]();
-    let cur;
-    while (!(cur = iter.next()).done) {
-      const a = cur.value;
+    for (const a of iter) {
       yield f(a);
     }
   });
@@ -33,10 +30,7 @@
 ### L.filter로 filter 만들기
 <script>
   L.filter = curry(function *(f, iter) {
-    iter = iter[Symbol.iterator]();
-    let cur;
-    while (!(cur = iter.next()).done) {
-      const a = cur.value;
+    for (const a of iter) {
       if (f(a)) yield a;
     }
   })
