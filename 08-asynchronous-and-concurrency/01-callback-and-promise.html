@@ -68,9 +68,9 @@
 
   const go2 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
 
-  const r1 = go2(10, add5);
-  log('r1', r1);
+  const n1 = 10;
+  go2(go2(n1, add5), log);
 
-  const r2 = go2(delay100(10), add5);
-  r2.then(a => log('r2', a));
+  const n2 = delay100(n1);
+  go2(go2(n2, add5), log); // 위의 코드와 같은 형태로 표현할 수 있다.
 </script>
