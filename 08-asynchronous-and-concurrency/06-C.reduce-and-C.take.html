@@ -4,12 +4,15 @@
 - 한 번에 실행하는 것이 부하가 아니라 효율인 상황에서 사용하면 좋다.
 <script>
   const C = {};
+  function noop() {}
+  const catchNoop = arr =>
+    (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
+
   C.reduce = curry((f, acc, iter) => {
-    const iter2 = iter ? [...iter] : [...acc];
-    iter2.forEach(a => a.catch(function() {}));
+    const iter2 = catchNoop(iter ? [...iter] : [...acc]);
     return iter
-      ? reduce(f, acc, [...iter])
-      : reduce(f, [...acc])
+      ? reduce(f, acc, iter2)
+      : reduce(f, iter2)
   });
 
   // reduce를 하지 않았을 때 delay500에 함수가 들어오는지 확인
