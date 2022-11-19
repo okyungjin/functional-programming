@@ -5,14 +5,14 @@
 <script>
   const C = {};
   function noop() {}
-  const catchNoop = arr =>
+  const catchNoop = ([...arr]) =>
     (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
 
   C.reduce = curry((f, acc, iter) => iter
-      ? reduce(f, acc, catchNoop([...iter]))
-      : reduce(f, catchNoop([...acc])));
+      ? reduce(f, acc, catchNoop(iter))
+      : reduce(f, catchNoop(acc)));
 
-  C.take = curry((l, iter) => take(l, catchNoop([...iter])));
+  C.take = curry((l, iter) => take(l, catchNoop(iter)));
 
   C.takeAll = C.take(Infinity);
 
