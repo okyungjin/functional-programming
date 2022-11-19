@@ -1,0 +1,15 @@
+<script src="../lib/fx.js"></script>
+
+## Promise.then의 중요한 규칙
+- then 메서드를 통해 결과를 꺼냈을 때의 값이 "반드시 프로미스는 아니다"라는 규칙이다.
+<script>
+  /**
+   * 프로미스 체인으로 여러 번 대기가 걸려도 한 번의 then으로 결과를 얻을 수 있다.
+   * 프로미스가 아무리 중첩된다고 해도 한 번의 then으로 꺼내서 사용할 수 있다!
+   */
+  Promise.resolve(Promise.resolve(Promise.resolve(1))).then((a) => {
+    log(a);
+  });
+
+  new Promise(resolve => resolve(new Promise(resolve => resolve(1)))).then(log);
+</script>
