@@ -3,11 +3,29 @@
 ## 지연 평가 + Promise - L.map, map, take
 - 현재 구현된 L.map은 동기적인 상황만 다룰 수 있다. 비동기적인 상황도 다룰 수 있게 변경해보자.
 <script>
+  // 검증1) Promise로 시작해서 Promise가 아닌 값
   go([Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
     L.map(a => a + 10),
     take(2),
     log);
 
+  // 검증2) Promise로 시작해서 Promise인 값
+  go([Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
+    L.map(a => Promise.resolve(a + 10)),
+    take(2),
+    log);
+
+  // 검증3) Promise가 아닌 값으로 시작해서 Promise가 아닌 값
+  go(range(3),
+    L.map(a => a + 10),
+    take(2),
+    log);
+
+  // 검증4) Promise가 아닌 값으로 시작해서 Promise인 값
+  go(range(3),
+    L.map(a => Promise.resolve(a + 10)),
+    take(2),
+    log);
 </script>
 
 ## Kleisli Composition - L.filter, filter, nop, take
