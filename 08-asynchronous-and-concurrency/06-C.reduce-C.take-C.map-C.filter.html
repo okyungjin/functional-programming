@@ -60,6 +60,59 @@
 
 ## 즉시 병렬적으로 평가하기 - C.map, C.filter
 <script>
-  C.map(a => delay1000(a * a), [1, 2, 3, 4]).then(log);
-  C.filter(a => delay1000(a * a), [1, 2, 3, 4]).then(log);
+  C.map(a => delay1000(a * a), [1, 2, 3, 4]).then(/*log*/);
+  C.filter(a => delay1000(a * a), [1, 2, 3, 4]).then(/*log*/);
+</script>
+
+## 즉시, 지연, Promise, 병렬적 조합하기
+<script>
+  const delay500 = (a, name) => new Promise(resolve => {
+    log(`${name}: ${a}`);
+    setTimeout(() => resolve(a), 500);
+  });
+
+  // CASE #1: 모두 돌면서 평가
+  console.time('');
+  go([1, 2, 3, 4, 5, 6, 7, 8],
+    map(a => delay500(a * a, 'map 1')),
+    filter(a => delay500(a % 2, 'filter 2')),
+    map(a => delay500(a + 1, 'map 3')),
+    take(2),
+    log,
+    _ => console.timeEnd(''));
+
+  // CASE #2: 모두 지연
+  console.time('2');
+  go([1, 2, 3, 4, 5, 6, 7, 8],
+    L.map(a => delay500(a * a, 'map 1')),
+    L.filter(a => delay500(a % 2, 'filter 2')),
+    L.map(a => delay500(a + 1, 'map 3')),
+    take(2),
+    log,
+    _ => console.timeEnd('2'));
+
+  // CASE #3: 부분 병렬
+  console.time('3');
+  go([1, 2, 3, 4, 5, 6, 7, 8],
+    C.map(a => delay500(a * a, 'map 1')), // 여기만 병렬적으로 처리하겠다
+    L.filter(a => delay500(a % 2, 'filter 2')),
+    L.map(a => delay500(a + 1, 'map 3')),
+    take(2),
+    log,
+    _ => console.timeEnd('3'));
+
+  // CASE #4: 모두 지연 처리 했다가 C.take 사용
+  console.time('4');
+  go([1, 2, 3, 4, 5, 6, 7, 8],
+    L.map(a => delay500(a * a, 'map 1')), // 여기만 병렬적으로 처리하겠다
+    L.filter(a => delay500(a % 2, 'filter 2')),
+    L.map(a => delay500(a + 1, 'map 3')),
+    C.take(2),
+    log,
+    _ => console.timeEnd('4'));
+
+  /**
+   * 병렬적(부하는 있지만 지연 최소화)으로 처리할 것인지, 지연적(최소로 평가)으로 처리할 것인지를 결정해야 한다.
+   * 상황에 맞는 방법을 선택하자!
+   */
 </script>
