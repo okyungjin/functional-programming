@@ -15,6 +15,8 @@
       : reduce(f, iter2)
   });
 
+  C.take = curry((l, iter) => take(l, catchNoop([...iter])));
+
   // reduce를 하지 않았을 때 delay500에 함수가 들어오는지 확인
   const delay1000 = a => new Promise(resolve => {
     log('heavy io');
@@ -22,19 +24,30 @@
   });
 
   // reduce를 하지 않으면 함수들을 대기해 놓은 상태이다. delay1000 내부는 아직 실행되지 않는다.
-  console.time('');
+  // console.time('');
   go([1, 2, 3, 4, 5],
     L.map(a => delay1000(a * a)),
     L.filter(a => a % 2),
     reduce(add),
-    log,
-    _ => console.timeEnd(''));
+    /*log,
+    _ => console.timeEnd('')*/);
 
-  console.time('C');
+  // console.time('C');
   go([1, 2, 3, 4, 5],
     L.map(a => delay1000(a * a)),
     L.filter(a => a % 2),
     C.reduce(add),
+    /*log,
+    _ => console.timeEnd('C')*/);
+
+  console.time('C2');
+  go([1, 2, 3, 4, 5, 6, 7, 8, 9],
+    L.map(a => delay1000(a * a)),
+    L.filter(a => a % 2),
+    L.map(a => delay1000(a * a)),
+    // take(2),
+    C.take(2), // 최대한의 자원을 사용해서 결과를 빨리 꺼내고 싶을 때 사용한다.
+    C.reduce(add),
     log,
-    _ => console.timeEnd('C'));
+    _ => console.timeEnd('C2'));
 </script>
