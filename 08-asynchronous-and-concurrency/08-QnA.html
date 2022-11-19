@@ -1,0 +1,60 @@
+<script src="../lib/fx.js"></script>
+
+## QnA. Array.prototype.map이 있는데 왜 FxJS의 map 함수가 필요한지?
+<script>
+  async function delayI(a) {
+    return new Promise(resolve => setTimeout(() => resolve(a), 100));
+  }
+
+  // Array.prototype.map 사용 시 Promise 핸들링이 어려움
+  function f1() {
+    const list = [1, 2, 3, 4];
+    const res = list.map(a => delayI(a * a));
+    // log(res);
+  }
+  f1();
+
+  // Promise 핸들링 시도
+  async function f2() {
+    const list = [1, 2, 3, 4];
+    const temp = list.map(async a => await delayI(a * a));
+    log(temp);
+    const res = await temp; // temp가 Promise[] 이기 때문에 await으로 풀어지지 않는다.
+    log(res);
+  }
+  f2();
+  /**
+   * 기존 map 함수는
+   *  1) 보조함수에서 Promise가 리턴되거나
+   *  2) 보조함수를 async 함수로 선언되었을 때
+   * Promise를 제어해주지 못한다.
+   */
+
+  // 함께 구현한 map 사용
+  async function f3() {
+    const list = [1, 2, 3, 4];
+    const res = await map(a => delayI(a * a), list); // 하나의 Promise가 내려옴
+    log(res);
+  }
+  f3();
+
+  // async 함수가 리턴하는 것은 Promise
+  async function f4() {
+    const list = [1, 2, 3, 4];
+    const res = await map(a => delayI(a * a), list);
+    log(res);
+    return res;
+  }
+  log(f4()); // async 함수 내에서는 값으로 잘 떨어졌는데, Promise로 감싸져서 반환된다.
+  (async () => {
+    log(await f4());
+  }) ();
+  // 결국 풀어서 전달하나 풀지 않고 전달하나 동일하다. 따라서 async 키워드가 없어져도 된다.
+
+
+  // f4에서 async 키워드 제거
+  function f5() {
+    return map(a => delayI(a * a), [1, 2, 3, 4]);
+  }
+</script>
+
