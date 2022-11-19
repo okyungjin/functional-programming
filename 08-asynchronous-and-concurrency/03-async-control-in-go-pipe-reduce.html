@@ -1,0 +1,17 @@
+<script src="../lib/fx.js"></script>
+
+## go, pipe, reduce에서 비동기 제어
+<script>
+  go(1,
+    a => a + 10,
+    a => Promise.resolve(a + 100), // 비동기 상황 발생
+    a => a + 1000,
+    a => a + 10000,
+    log);
+  // [object Promise]100010000
+
+  /**
+   * go에서는 reduce 함수만 사용하고 있고, pipe에서는 go 함수만 사용하고 있기 때문에
+   * reduce 함수를 고쳐주면 된다.
+   */
+</script>
