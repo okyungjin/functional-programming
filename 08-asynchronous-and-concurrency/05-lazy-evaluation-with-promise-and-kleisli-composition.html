@@ -65,5 +65,14 @@
     L.filter(a => Promise.resolve(a % 2)),
     reduce(add),
     log);
-  //  1 9 25 = 35
+</script>
+
+## 지연 평가 + Promise의 효율성
+- take에서 다 뽑으면 비동기 로직에 진입 자체를 하지 않기 때문에 훨씬 효율적이다.
+<script>
+  go([1, 2, 3, 4],
+    L.map(a => new Promise(resolve => setTimeout(() => resolve(a * a), 1000))),
+    L.filter(a => new Promise(resolve => setTimeout(() => resolve(a * a), 1000))),
+    take(2),
+    log);
 </script>
