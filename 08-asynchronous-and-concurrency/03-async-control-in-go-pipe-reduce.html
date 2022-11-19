@@ -2,6 +2,7 @@
 
 ## go, pipe, reduce에서 비동기 제어
 <script>
+  // 1) 중간에 비동기 상황이 발생한 경우
   go(1,
     a => a + 10,
     a => Promise.resolve(a + 100), // 비동기 상황 발생
@@ -14,4 +15,22 @@
    * go에서는 reduce 함수만 사용하고 있고, pipe에서는 go 함수만 사용하고 있기 때문에
    * reduce 함수를 고쳐주면 된다.
    */
+
+  // 2) 시작이 Promise인 경우
+  go(Promise.resolve(1),
+    a => a + 10,
+    a => Promise.resolve(a + 100),
+    a => a + 1000,
+    a => a + 10000,
+    log);
+
+
+  // 3) 중간에 Promise.reject가 있는 경우
+  go(Promise.resolve(1),
+    a => a + 10,
+    () => Promise.reject('error~'), // 오류가 발생하면 이후로는 흐르지 않는다!
+    () => console.log('----'),
+    a => a + 1000,
+    a => a + 10000,
+    log).catch(a => console.log(a));
 </script>
