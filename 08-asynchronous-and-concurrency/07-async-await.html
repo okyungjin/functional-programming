@@ -1,0 +1,53 @@
+<script src="../lib/fx.js"></script>
+
+## async/await
+<script>
+  function delay(a) {
+    return new Promise(resolve => setTimeout(() => resolve(a), 500));
+  }
+
+  /**
+   * `await`을 하려면 결국 Promise로 구현해야 한다.
+   * Promise를 던져주는 라이브러리를 사용할 경우, 대부분의 케이스에서는 await 키워드로 사용할 수 있다.
+   * 하지만, Promise를 값으로 다뤄셔 평가 시점을 컨트롤 할 경우에는 결국 Promise를 만들 줄 알아야 한다.
+   */
+  async function f1() {
+    const a = await delay(10);
+    const b = await delay(5);
+    log(a + b);
+  }
+  f1();
+
+
+  /**
+   * async 함수는 어떤 상황에서든 Promise를 리턴한다.
+   */
+  async function f2() {
+    const a = await delay(10);
+    const b = await delay(5);
+
+    // 상수를 더해서 return해도 Promise를 리턴한다.
+    // const a = 10;
+    // const b = 5;
+
+    return a + b;
+    // 이를 방지하기 위해 log(a + b)와 같이 함수를 실행하도록 한다면,
+    // 이 값을 이어 받아서 처리하는 등의 작업이 불가능해진다.
+  }
+  log(f2()); // Promise가 떨어짐
+  f2().then(log);
+  go(f2(), log);
+  (async () => {
+    log(await f2());
+  }) ();
+
+  let pa = Promise.resolve(10);
+  // f2를 실행시킨 값을 pa 변수에 넣어 원하는 시점에 await으로 값을 살펴볼 수 있다.
+  pa = f2();
+
+  (async () => {
+    log(await pa);
+    log(await pa);
+    log(await pa);
+  }) ();
+</script>
