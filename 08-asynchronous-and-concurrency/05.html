@@ -1,0 +1,21 @@
+<script src="../lib/fx.js"></script>
+
+## 지연 평가 + Promise - L.map, map, take
+- 현재 구현된 L.map은 동기적인 상황만 다룰 수 있다. 비동기적인 상황도 다룰 수 있게 변경해보자.
+<script>
+  go([Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
+    L.map(a => a + 10),
+    take(2),
+    log);
+
+</script>
+
+## Kleisli Composition - L.filter, filter, nop, take
+<script>
+
+</script>
+
+## reduce에서 nop 지원
+<script>
+
+</script>
