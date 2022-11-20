@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <script src="../lib/fx.js"></script>
 
 ## QnA. Array.prototype.map이 있는데 왜 FxJS의 map 함수가 필요한지?
@@ -162,9 +163,30 @@
       return [];
     }
   }
-  log(f10(['0', '1', '2', '{']));
+  // log(f10(['0', '1', '2', '{']));
 
-  f10(['0', '1', '2', '{']).then(log).catch(e => {
-    log('에러 핸들링! but 여기 안 걸림');
-  });
+  // f10(['0', '1', '2', '{']).then(log).catch(e => {
+  //   log('에러 핸들링! but 여기 안 걸림');
+  // });
+</script>
+
+
+## QnA. 동기/비동기 에러 핸들링에서의 파이프라인의 이점은?
+<script>
+  async function f11(list) {
+    try {
+      // Promise.reject 으로 떨어져야 catch에 걸리므로, await을 붙여준다.
+      return await go(
+        list,
+        L.map(a => new Promise(resolve => resolve(JSON.parse(a)))),
+        L.filter(a => a % 2),
+        take(1));
+    } catch (e) {
+      log(e, '-------------');
+      return [];
+    }
+  }
+
+  // 지연 평가를 했을 때 오류가 발생하는 요소 이전이라면 오류가 발생하지 않는다.
+  f11(['0', '1', '2', '{']).then(log);
 </script>
