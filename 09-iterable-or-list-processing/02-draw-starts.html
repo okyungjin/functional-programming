@@ -1,0 +1,35 @@
+<meta charset="UTF-8">
+<script src="../lib/fx.js"></script>
+
+### 추억의 별 그리기
+*
+**
+***
+****
+<script>
+  // 내가 짠 코드
+  _.go(_.range(1, 6),
+    _.map(a => '*'.repeat(a)),
+    _.each(console.log));
+
+  console.log('')
+
+  _.go(
+    L.range(1, 6),
+    L.map(L.range),
+    L.map(L.map(_ => '*')),
+    L.map(_.reduce((a, b) => `${a}${b}`)),
+    _.reduce((a, b) => `${a}\n${b}`),
+    console.log);
+  
+  // map 중첩 풀기
+  _.go(
+    L.range(1, 6),
+    L.map(n => _.go(
+      L.range(n),
+      L.map(_ => '*'),
+      _.reduce((a, b) => `${a}${b}`))
+    ),
+    _.reduce((a, b) => `${a}\n${b}`),
+    console.log);
+</script>
