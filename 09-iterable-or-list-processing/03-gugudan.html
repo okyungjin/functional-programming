@@ -1,0 +1,18 @@
+<meta charset="UTF-8">
+<script src="../lib/fx.js"></script>
+
+### 추억의 구구단
+<script>
+  const join = sep => _.reduce((a, b) => `${a}${sep}${b}`);
+
+  // 내가 짠 코드 (정답!)
+  _.go(
+    L.range(2, 10),
+    L.map(a => _.go(
+      L.range(1, 10),
+      L.map(b => `${a} x ${b} = ${a*b}`),
+      join('\n'))
+    ),
+    join('\n\n'),
+    console.log)
+</script>
