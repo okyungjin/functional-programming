@@ -33,7 +33,7 @@ f2(3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 console.clear();
 </script>
 
-### 효과를 each로 구분
+### while을 range로
 <script>
 function f3(end) {
   let i = 1;
@@ -48,4 +48,15 @@ function f4(end) {
   _.each(console.log, L.range(1, end, 2)); // filter 대신에 range에 2
 }
 f4(10);
+console.clear();
+</script>
+
+### 효과를 each로 구분
+<script>
+function f5(end) {
+  _.go(
+    L.range(1, end, 2),
+    _.each(console.log)); // each 함수의 결과는 전달한 인자와 동일한 값
+}
+f5(10);
 </script>
