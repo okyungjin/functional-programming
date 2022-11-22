@@ -14,12 +14,14 @@
 
   console.log('')
 
+  const join = sep => _.reduce((a, b) => `${a}${sep}${b}`);
+
   _.go(
     L.range(1, 6),
     L.map(L.range),
     L.map(L.map(_ => '*')),
-    L.map(_.reduce((a, b) => `${a}${b}`)),
-    _.reduce((a, b) => `${a}\n${b}`),
+    L.map(join('')),
+    join('\n'),
     console.log);
   
   // map 중첩 풀기
@@ -28,8 +30,8 @@
     L.map(n => _.go(
       L.range(n),
       L.map(_ => '*'),
-      _.reduce((a, b) => `${a}${b}`))
-    ),
-    _.reduce((a, b) => `${a}\n${b}`),
+      join('')
+    )),
+    join('\n'),
     console.log);
 </script>
