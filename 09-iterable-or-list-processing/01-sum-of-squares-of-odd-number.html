@@ -2,7 +2,7 @@
 <script src="../lib/fx.js"></script>
 
 ## 이터러블 프로그래밍 혹은 리스트 프로세싱
-- 홀수를 제곱해서 모두 더하기
+### 홀수를 제곱해서 모두 더하기
 <script>
 // 명령형 코드
 function f1(limit, list) {
@@ -30,4 +30,22 @@ function f2(limit, list) {
     console.log);
 }
 f2(3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+console.clear();
+</script>
+
+### 효과를 each로 구분
+<script>
+function f3(end) {
+  let i = 1;
+  while (i < end) {
+    console.log(i);
+    i += 2;
+  }
+}
+f3(10);
+
+function f4(end) {
+  _.each(console.log, L.range(1, end, 2)); // filter 대신에 range에 2
+}
+f4(10);
 </script>
