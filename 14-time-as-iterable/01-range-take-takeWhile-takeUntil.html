@@ -22,9 +22,27 @@ _.go(
   L.filter(a => a % 2),
   L.map(a => new Date()),
   L.take(3),   // 최대 3개의 값을 필요하고, 최대 3번의 일을 수행
-  _.each(console.log));
+  /*_.each(console.log)*/);
+
+  // _.take(3)을 하면 3개 다 가져올 때가지 기다린다.
 
   // 시간이 있는 어떤 일들을 이터러블, 리스트로 바라보고 프로그래밍하는 것
+</script>
+
+
+2. takeWhile, takeUntil
+<script>
+console.log('===== takeWhile ======');
+_.go(
+  [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 1, 2],
+  _.takeWhile(a => a),
+  _.each(console.log));
+
+console.log('===== takeUntil ======');
+_.go(
+  [0, false, undefined, null, 10, 20, 30],
+  _.takeUntil(a => a),
+  _.each(console.log));
 </script>
 </body>
 </html>
