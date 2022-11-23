@@ -64,5 +64,17 @@
 
   console.clear();
 </script>
+
+
+3. keys
+<script>
+  L.keys = function *(obj) {
+    for (const k in obj) yield k;
+  };
+
+  _.go(obj1,
+    L.keys,
+    _.each(console.log));
+</script>
 </body>
 </html>
