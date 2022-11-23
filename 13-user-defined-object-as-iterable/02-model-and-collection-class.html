@@ -75,6 +75,11 @@ _.go(
   // L.map(i => coll.at(i)),
   L.map(m => m.get('name')),
   _.each(console.log));
+
+_.go(
+  coll,
+  _.each(m => m.set('name', m.get('name').toLowerCase())));
+console.log(_.map(m => m.get('name'), coll));
 </script>
 </body>
 </html>
