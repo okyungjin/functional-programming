@@ -100,5 +100,38 @@
     _.reduce((a, b) => a + b),
     console.log);
 </script>
+
+
+5. object
+<script>
+  const a = [['a', 1], ['b', 2], ['c', 3]];
+  const b = { a: 1, b: 2, c: 3 };
+
+  // 방법 1
+  const object = entries => _.go(
+    entries,
+    L.map(([k, v]) => ({ [k]: v })),
+    _.reduce(Object.assign));
+  console.log(object(a));
+
+  // 방법 2
+  // entries를 발생시킬 수 있는 값이라면 함수 통과가 가능하다.
+  // 표준만 맞춰준 이터러블이 들어온다면 객체로 만들 수 있다. (다형성이 아주 높음)
+  const object2 = entries => 
+    _.reduce((obj, [k, v]) => (obj[k] = v, obj), {}, entries);
+  console.log(object2(a));
+  console.log(object2(L.entries({ b: 2, c: 3})));
+
+  let m = new Map();
+  m.set('a', 10);
+  m.set('b', 20);
+  m.set('c', 30);
+  
+  // m이라는 객체가 이터러블을 지원하기 때문에 `object2(m)`으로 바로 사용할 수 있다.
+  console.log(object2(m));
+  console.log([...m[Symbol.iterator]()]);
+
+  console.clear();
+</script>
 </body>
 </html>
