@@ -112,8 +112,7 @@
           Object.entries(obj))));
   console.log(query3(obj1));
 
-  const query4 = obj => _.go(
-    obj,
+  const query4 = _.pipe(
     Object.entries,
     _.reject(([_, v]) => v === undefined),
     _.map(([k, v]) => `${k}=${v}`),
