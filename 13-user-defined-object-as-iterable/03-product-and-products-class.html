@@ -44,9 +44,8 @@ class Product extends Model {}
 
 class Products extends Collection {
   totalPrice() {
-    return _.go(this,
-      L.map(p => p.get('price')),
-      _.reduce((a, b) => a + b));
+    return _.reduce((a, b) => a + b,
+      L.map(p => p.get('price'), this));
   }
 }
 
