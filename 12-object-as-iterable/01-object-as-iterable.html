@@ -76,5 +76,29 @@
     L.keys,
     _.each(console.log));
 </script>
+
+
+4. 어떠한 값이든 이터러블 프로그래밍으로 다루기
+  - 이터러블로 이터러블 프로그래밍
+  - 객체를 제너레이터를 이용해서 이터레이터로 만들어서 이터러블 프로그래밍
+  - 어떤 제너레이터든 이터레이터로 만들어서 이터러블 프로그래밍
+<script>
+  const g1 = function *(stop) {
+    let i = -1;
+    while (++i < stop) {
+      yield 10;
+      if (false) yield 20 + 30;
+      yield 30;
+    }
+  };
+
+  console.log([...L.take(3, g1(3))]);
+  // _.each(console.log, g1(10));
+
+  _.go(
+    g1(10),
+    _.reduce((a, b) => a + b),
+    console.log);
+</script>
 </body>
 </html>
