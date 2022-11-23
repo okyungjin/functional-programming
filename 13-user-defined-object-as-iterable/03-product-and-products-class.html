@@ -44,11 +44,9 @@ class Product extends Model {}
 
 class Products extends Collection {
   totalPrice() {
-    let total = 0;
-    this._models.forEach(product => {
-      total += product.get('price');
-    });
-    return total;
+    return _.go(this,
+      L.map(p => p.get('price')),
+      _.reduce((a, b) => a + b));
   }
 }
 
