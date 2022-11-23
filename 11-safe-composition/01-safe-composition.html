@@ -34,6 +34,36 @@
     [10],
     L.map(fg),
     _.each(console.log));
+
+  console.clear();
+</script>
+
+
+2. find 대신 L.filter 써보기
+<script>
+  const users = [
+    { name: 'AA', age: 35 },
+    // { name: 'BB', age: 26 },
+    { name: 'CC', age: 28 },
+    { name: 'CC', age: 34 },
+    { name: 'EE', age: 23 },
+  ];
+
+  // BB 데이터가 사라지면 undefined가 된다.
+  const user = _.find(u => u.name === 'BB', users);
+  // if (user) {
+    console.log(user);
+  // }
+
+  _.each(console.log,
+    L.take(1,
+      L.filter(u => u.name === 'BB', users)));
+    
+  // L.filter를 사용하면 find와 동일한 시간 복잡도를 가지면서도 안전한 합성이 가능하다.
+  _.go(users,
+    L.filter(u => u.name === 'BB'),
+    L.take(1),
+    _.each(console.log));
 </script>
 </body>
 </html>
