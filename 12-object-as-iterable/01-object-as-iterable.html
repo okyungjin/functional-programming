@@ -40,5 +40,29 @@
 
     console.clear();
 </script>
+
+
+2. entries
+<script>
+  L.entries = function *(obj) {
+    for (const k in obj) yield [k, obj[k]];
+  }
+
+  // 이터러블이 아닌 값을 이터러블로 만들어서 이터러블 프로그래밍이 가능하도록 만든다는 점이 중요하다.
+  _.go(obj1,
+    L.entries,
+    L.filter(([k, v]) => v % 2),
+    L.map(([k, v]) => ({ [k]: v })),
+    _.each(console.log));
+
+  _.go(obj1,
+    L.entries,
+    L.filter(([k, v]) => v % 2),
+    L.map(([k, v]) => ({ [k]: v })),
+    _.reduce(Object.assign),
+    console.log);
+
+  console.clear();
+</script>
 </body>
 </html>
