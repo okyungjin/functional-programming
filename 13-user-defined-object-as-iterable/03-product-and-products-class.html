@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../lib/fx.js"></script>
+  <title>Product, Products - 메서드를 함수형으로 구현하기</title>
+</head>
+<body>
+## Product, Products - 메서드를 함수형으로 구현하기
+3. Product, Products
+<script>
+class Model {
+  constructor(attrs = {}) {
+    this._attrs = attrs;
+  }
+  get(k) {
+    return this._attrs[k];
+  }
+  set(k, v) {
+    this._attrs[k] = v;
+    return this;
+  }
+}
+
+class Collection {
+  constructor(models = []) {
+    this._models = models;
+  }
+  at(idx) {
+    return this._models[idx];
+  }
+  add(model) {
+    this._models.push(model);
+    return this;
+  }
+  *[Symbol.iterator]() {
+    yield *this._models;
+  }
+}
+
+class Product extends Model {}
+
+class Products extends Collection {
+  totalPrice() {
+    let total = 0;
+    this._models.forEach(product => {
+      total += product.get('price');
+    });
+    return total;
+  }
+}
+
+const products = new Products();
+products.add(new Product({ id: 1, price: 10_000 }));
+console.log(products.totalPrice());
+products.add(new Product({ id: 3, price: 25_000 }));
+console.log(products.totalPrice());
+products.add(new Product({ id: 5, price: 35_000 }));
+console.log(products.totalPrice());
+</script>
+</body>
+</html>
