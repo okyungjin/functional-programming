@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../lib/fx.js"></script>
+  <title>객체를 이터러블 프로그래밍으로 다루기</title>
+</head>
+<body>
+## 객체를 이터러블 프로그래밍으로 다루기
+<script>
+  const obj1 = {
+    a: 1,
+    b: 2,
+    c: 3,
+    d: 4,
+  }
+</script>
+
+1. values
+<script>
+  console.log(Object.values(obj1));
+
+  L.values = function *(obj) {
+    for (const k in obj) yield obj[k];
+  };
+
+  var it = L.values(obj1);
+  it = L.take(2, it);
+  console.log([...it]); // 객체의 key가 많을 때 2개만 뽑아오므로 효율적!
+
+  _.go(
+    obj1,
+    Object.values,
+    _.map(a => a + 10),
+    L.take(2),
+    _.reduce((a, b) => a + b),
+    console.log);
+
+    console.clear();
+</script>
+</body>
+</html>
