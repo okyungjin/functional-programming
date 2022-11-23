@@ -54,10 +54,12 @@ class Collection {
     return this;
   }
   *[Symbol.iterator]() {
-    for (const model of this._models) {
-      yield model;
-    }
+    yield *this._models;
   }
+  // 동일한 표현
+  // [Symbol.iterator]() {
+  //   return this._models[Symbol.iterator]();
+  // }
 }
   
 const coll = new Collection();
