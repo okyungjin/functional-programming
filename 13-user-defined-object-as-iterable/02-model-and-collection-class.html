@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../lib/fx.js"></script>
+  <title>사용자 정의 객체를 이터러블 프로그래밍으로 다루기</title>
+</head>
+<body>
+## Model, Collection 클래스 만들어서 이터러블 프로토콜 지원하기
+1. Model, Collection
+<script>
+const els = document.querySelectorAll('*');
+console.log(els[Symbol.iterator]());
+console.log(_.map(el =>  el.nodeName, els));
+
+console.clear();
+
+// 함수형 프로그래밍이 객체 지향 프로그래밍을 대체하기 위함이라고 생각할 필요는 없다.
+// 객체지향과 함수형이 잘 어우러지게 사용하면 된다.
+class Model0 {
+  toJSON() {
+    // 이런 로직을 map, filter, reduce, take 등 이터러블 프로그래밍으로 변경하면 된다.
+    // for () {
+    //   if () i++;
+    // }
+    // return
+  }
+}
+
+class Model {
+  constructor(attrs = {}) {
+    this._attrs = attrs;
+  }
+  get(k) {
+    return this._attrs[k];
+  }
+  set(k, v) {
+    this._attrs[k] = v;
+    return this;
+  }
+}
+
+class Collection {
+  constructor(models = []) {
+    this._models = models;
+  }
+  at(idx) {
+    return this._models[idx];
+  }
+  add(model) {
+    this._models.push(model);
+    return this;
+  }
+  *[Symbol.iterator]() {
+    for (const model of this._models) {
+      yield model;
+    }
+  }
+}
+  
+const coll = new Collection();
+coll.add(new Model({ id: 1, name: 'AA' }));
+coll.add(new Model({ id: 3, name: 'BB' }));
+coll.add(new Model({ id: 5, name: 'CC' }));
+// console.log(coll.at(2).get('name'));
+// console.log(coll.at(1).get('id'));
+
+_.go(
+  coll,
+  // L.range(3),
+  // L.map(i => coll.at(i)),
+  L.map(m => m.get('name')),
+  _.each(console.log));
+</script>
+</body>
+</html>
