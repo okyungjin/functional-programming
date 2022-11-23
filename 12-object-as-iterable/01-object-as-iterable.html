@@ -161,16 +161,21 @@
       object);
 
   // 파이프라인으로 구현
-  const pick1 = (ks, obj) => _.go(
+  const pick = (ks, obj) => _.go(
     ks,
     _.map(k => [k, obj[k]]),
+    _.reject(([k, v]) => v === undefined),
     object);
 
   // 파이프라인 사용하지 않고 구현
-  const pick2 = (ks, obj) => object(_.map(k => [k, obj[k]], ks));
+  // const pick2 = (ks, obj) => object(_.map(k => [k, obj[k]], ks));
 
-  console.log(pick2(['b', 'c'], obj2));
+  console.log(pick(['b', 'c'], obj2));
   // { b: 2, c: 3}
+
+  // 유효하지 않은 key를 pick할 경우 undefined 대신 key 자체를 숨기도록 구현
+  // JSON에는 undefined라는 값이 없기 떄문
+  console.log(pick(['b', 'c', 'g'], obj2));
 </script>
 </body>
 </html>
