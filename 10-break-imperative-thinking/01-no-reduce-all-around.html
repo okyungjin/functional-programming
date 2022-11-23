@@ -34,5 +34,26 @@
   console.log(_.reduce(add, ages(users)));
   console.clear();
 </script>
+
+
+2. reduce 하나 보다 map + filter + reduce
+<script>
+  // BAD
+  console.log(
+    _.reduce((total, u) => u.age >= 30 ? total : total + u.age,
+      0,
+      users));
+
+  console.log(
+    _.reduce(add,
+      L.filter(a => a < 30,
+        L.map(u => u.age, users))));
+
+  // 위의 코드와 결과 동일
+  console.log(
+    _.reduce(add,
+      L.map(u => u.age,
+        L.filter(u => u.age < 30, users))));
+</script>
 </body>
 </html>
