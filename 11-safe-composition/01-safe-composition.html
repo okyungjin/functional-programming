@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../lib/fx.js"></script>
+  <title>안전한 합성에 대해</title>
+</head>
+<body>
+## 안전한 합성에 대해
+1. map으로 합성하기
+<script>
+  const f = x => x + 10;
+  const g = x => x - 5;
+  const fg = x => f(g(x));
+  // console.log(fg(10));
+
+  // 결과가 NaN, 이럴 때 안전한 합성이 필요
+  // console.log(fg());
+
+  _.go(
+    10,
+    fg,
+    console.log);
+
+  // 안전한 함수 합성이 가능하다.
+  _.go(
+    [],
+    L.map(fg),
+    _.each(console.log));
+
+  _.go(
+    [10],
+    L.map(fg),
+    _.each(console.log));
+</script>
+</body>
+</html>
