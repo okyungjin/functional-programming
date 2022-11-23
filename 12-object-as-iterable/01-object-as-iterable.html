@@ -133,5 +133,19 @@
 
   console.clear();
 </script>
+
+
+6. mapObject
+<script>
+  const mapObject = (f, obj) => 
+  _.go(obj,
+    L.entries,
+    L.map(([k, v]) => [k, f(v)]),
+    object);
+  
+  console.log(mapObject(a => a + 10, { a: 1, b: 2, c: 3 }));
+
+  console.clear();
+</script>
 </body>
 </html>
