@@ -57,7 +57,7 @@
 </script>
 
 
-3. query, queryToObject
+3. query
 <script>
   const obj1 = {
     a: 1,
@@ -115,7 +115,7 @@
   const query4 = _.pipe(
     Object.entries,
     _.reject(([_, v]) => v === undefined),
-    _.map(([k, v]) => `${k}=${v}`),
+    L.map(([k, v]) => `${k}=${v}`),
     join('&'));
   console.log(query4(obj1));
 </script>
