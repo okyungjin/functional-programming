@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../lib/fx.js"></script>
+  <title>사용자 정의 객체를 이터러블 프로그래밍으로 다루기</title>
+</head>
+<body>
+## 사용자 정의 객체를 이터러블 프로그래밍으로 다루기
+1. Map
+<script>
+let m = new Map();
+m.set('a', 1);
+m.set('b', 2);
+m.set('c', 3);
+
+// console.log([...m.entries()]);
+// console.log([...m.keys()]);
+// console.log([...m.values()]);
+
+// map 필터하기
+_.go(
+  m,
+  L.filter(([k, v]) => v % 2),
+  _.takeAll,
+  entries => new Map(entries),
+  console.log);
+
+  console.clear();
+</script>
+
+
+2. Set
+<script>
+let s = new Set();
+s.add(10);
+s.add(20);
+s.add(30);
+
+const add = (a, b) => a + b;
+console.log(_.reduce(add, s));
+</script>
+</body>
+</html>
