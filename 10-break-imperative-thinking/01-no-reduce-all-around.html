@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../lib/fx.js"></script>
+  <title>명령형 습관 지우기 - 만능 reduce? No!</title>
+</head>
+<body>
+## 명령형 습관 지우기 - 만능 reduce? No!
+1. reduce + 복잡한 함수 + acc보다 map + 간단한 함수 + reduce
+<script>
+  const users = [
+    { name: 'AA', age: 35 },
+    { name: 'BB', age: 26 },
+    { name: 'CC', age: 28 },
+    { name: 'CC', age: 34 },
+    { name: 'EE', age: 23 },
+  ];
+
+  // 이러한 보조함수는 함수명을 짓기도 애매하고, 재사용성이 낮다. (조합성 저하)
+  console.log(
+    _.reduce((total, u) => total + u.age, 0, users));
+
+  // 보조 함수를 복잡하게 구성하는 것보다
+  // 숫자의 배열처럼 먼저 간단하게 구성하는 것이 좋다. (보조함수가 간단해지기 때문)
+  _.reduce((a, b) => a + b, [1, 2, 3]);
+
+  // 조합성이 더 좋다.
+  const add = (a, b) => a + b;
+  const ages = _.map(u => u.age);
+  
+  console.log(_.reduce(add, ages(users)));
+  console.clear();
+</script>
+</body>
+</html>
