@@ -55,5 +55,41 @@
       L.map(u => u.age,
         L.filter(u => u.age < 30, users))));
 </script>
+
+
+3. query, queryToObject
+<script>
+  const obj1 = {
+    a: 1,
+    b: undefined,
+    c: 'CC',
+    d: 'DD'
+  };
+  // a=1&c=CC&d=DD
+
+  // 명령형 코드
+  function query1(obj) {
+    let res = '';
+    for (const k in obj) {
+      const v = obj[k];
+      if (v === undefined) continue;
+      if (res !== '') res += '&';
+      res += k + '=' + v;
+    }
+    return res;
+  }
+  console.log(query1(obj1));
+
+  // 복잡한 reduce 하나로 처리
+  function query2(obj) {
+    return Object
+      .entries(obj)
+      .reduce((query, [k, v], i) => {
+        if (v === undefined) return query;
+        return `${query}${i > 0 ? '&' : ''}${k}=${v}`;
+      }, '');
+  }
+  console.log(query2(obj1));
+</script>
 </body>
 </html>
