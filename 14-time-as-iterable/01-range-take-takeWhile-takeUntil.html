@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../lib/fx.js"></script>
+  <title>시간을 이터러블로 다루기</title>
+</head>
+<body>
+## 시간을 이터러블로 다루기
+1. range와 take의 재해석
+<script>
+_.go(
+  _.range(10), // 0부터 9까지의 배열
+  _.take(3),   // 앞에서부터 3개만 자르기
+  console.log);
+
+_.go(
+  L.range(1, 10), // 0부터 9까지의 이터러블, 최대 10번 일어날 일
+  L.map(_.delay(1000)),
+  L.filter(a => a % 2),
+  L.map(a => new Date()),
+  L.take(3),   // 최대 3개의 값을 필요하고, 최대 3번의 일을 수행
+  _.each(console.log));
+
+  // 시간이 있는 어떤 일들을 이터러블, 리스트로 바라보고 프로그래밍하는 것
+</script>
+</body>
+</html>
