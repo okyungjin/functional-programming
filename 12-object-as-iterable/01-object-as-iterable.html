@@ -147,5 +147,30 @@
 
   console.clear();
 </script>
+
+
+7. pick
+<script>
+  const obj2 = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+
+  // 내가 구현
+  const pick0 = (a, obj) =>
+    _.go(obj2,
+      L.entries,
+      L.filter(([k, _]) => a.includes(k)),
+      object);
+
+  // 파이프라인으로 구현
+  const pick1 = (ks, obj) => _.go(
+    ks,
+    _.map(k => [k, obj[k]]),
+    object);
+
+  // 파이프라인 사용하지 않고 구현
+  const pick2 = (ks, obj) => object(_.map(k => [k, obj[k]], ks));
+
+  console.log(pick2(['b', 'c'], obj2));
+  // { b: 2, c: 3}
+</script>
 </body>
 </html>
