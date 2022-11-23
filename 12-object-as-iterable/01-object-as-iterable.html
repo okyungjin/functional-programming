@@ -176,6 +176,33 @@
   // 유효하지 않은 key를 pick할 경우 undefined 대신 key 자체를 숨기도록 구현
   // JSON에는 undefined라는 값이 없기 떄문
   console.log(pick(['b', 'c', 'g'], obj2));
+
+  console.clear();
+</script>
+
+
+8. indexBy
+<script>
+  const users = [
+    { id: 5, name: 'AA', age: 35 },
+    { id: 10, name: 'BB', age: 26 },
+    { id: 19, name: 'CC', age: 28 },
+    { id: 23, name: 'CC', age: 34 },
+    { id: 24, name: 'EE', age: 23 },
+  ];
+
+  // 내가 구현
+  _.indexBy = (f, iter) => 
+    _.go(iter,
+      L.map(a => ([f(a), a])),
+      object);
+
+  _.indexBy = (f, iter) => _.reduce((obj, a) => (obj[f(a)] = a, obj), {}, iter);
+
+  const users2 = _.indexBy(u => u.id, users);
+  console.log(users2);
+
+  console.clear();
 </script>
 </body>
 </html>
