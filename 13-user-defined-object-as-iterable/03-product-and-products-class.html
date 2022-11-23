@@ -42,10 +42,11 @@ class Collection {
 
 class Product extends Model {}
 
+const add = (a, b) => a + b;
+const addAll = _.reduce(add);
 class Products extends Collection {
   totalPrice() {
-    return _.reduce((a, b) => a + b,
-      L.map(p => p.get('price'), this));
+    return addAll(L.map(p => p.get('price'), this));
   }
 }
 
