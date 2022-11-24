@@ -74,7 +74,7 @@ _.go(
 
 const Ui = {};
 
-Ui.message = ({msg, btns}) => new Promise(resolve => _.go(
+Ui.message = (btns, msg) => new Promise(resolve => _.go(
   `
   <div class="confirm">
     <div class="body">
@@ -98,20 +98,14 @@ Ui.message = ({msg, btns}) => new Promise(resolve => _.go(
       _ => resolve(btn.value)))), btns)
 ));
 
-Ui.confirm = msg => Ui.message({
-  msg,
-  btns: [
-    { name: '취소', type: 'cancel', value: false },
-    { name: '확인', type: 'ok', value: true }
-  ]
-});
+Ui.confirm = msg => Ui.message(
+  [{ name: '취소', type: 'cancel', value: false },
+   { name: '확인', type: 'ok', value: true }],
+  msg);
 
-Ui.alert = msg => Ui.message({
-  msg,
-  btns: [
-    { name: '확인', type: 'ok', value: true }
-  ]
-});
+Ui.alert = msg => Ui.message(
+  [{ name: '확인', type: 'ok', value: true }],
+  msg);
 </script>
 </body>
 </html>
