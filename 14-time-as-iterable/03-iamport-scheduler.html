@@ -65,7 +65,14 @@ async function job() {
     DB.getOrders,
     _.map(({id}) => id));
 
-  console.log(order_ids);
+  // 결제 모듈의 payemtns와 가맹점의 주문서를 비교하여
+  // 결제를 취소해야 할 id를 뽑아 결제 취소 api를 실행
+  await _.go(
+    payments,
+    L.reject(p => order_ids.includes(p.order_id)),
+    L.map(p => p.imp_id),
+    L.map(Impt.cancelPayment),
+    _.each(console.log));
 }
 job();
 
