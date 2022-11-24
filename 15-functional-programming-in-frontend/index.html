@@ -72,6 +72,7 @@ _.go(
       img.onload = () => resolve(img);
       img.src = img.getAttribute('lazy-src');
     })),
+    C.takeAll,
     _.each($.addClass('fade-in'))
   ),
   $.findAll('.remove'),
