@@ -12,7 +12,8 @@
 <script>
 const $ = {};
 
-$.qs = document.querySelector.bind(document);
+$.qs = (sel, parent = document) => parent.querySelector(sel);
+$.qsa = (sel, parent = document) => parent.querySelectorAll(sel);
 
 $.el = html => {
   const wrap = document.createElement('div');
