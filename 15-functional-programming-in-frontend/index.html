@@ -24,6 +24,9 @@ $.append = _.curry((parent, child) => parent.appendChild(child));
 
 $.remove = el => el.parentNode.removeChild(el);
 
+$.on = (event, f) => els => 
+  _.each(el => el.addEventListener(event, f), _.isIterable(els) ? els : [els]);
+
 $.el = html => {
   const wrap = document.createElement('div');
   wrap.innerHTML = html;
@@ -62,11 +65,10 @@ _.go(
   $.el,
   $.append($.qs('body')),
   $.findAll('.remove'),
-  _.each(el => el.addEventListener('click', e => _.go(
+  $.on('click', e => _.go(
     e.currentTarget,
     $.closest('.image'),
-    $.remove,
-  ))));
+    $.remove)));
 </script>
 </body>
 </html>
