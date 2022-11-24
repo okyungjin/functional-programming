@@ -68,11 +68,21 @@ _.go(
   $.append($.qs('body')),
   _.tap(
     $.findAll('img'),
-    L.map(img => new Promise(resolve => {
+    L.map(img => _ => new Promise(resolve => {
       img.onload = () => resolve(img);
       img.src = img.getAttribute('lazy-src');
     })),
-    C.takeAll,
+    lazy => {
+      let r = L.range(Infinity); // 언제까지 발생할지 모름
+      return _.go(
+        lazy,
+        _.groupBy(_ => Math.floor(r.next().value / 12)),
+        L.values,
+        L.map(L.map(f => f())),
+        L.map(C.takeAll),
+        _.each(_.each($.addClass('fade-in')))
+      );
+    },
     _.each($.addClass('fade-in'))
   ),
   $.findAll('.remove'),
