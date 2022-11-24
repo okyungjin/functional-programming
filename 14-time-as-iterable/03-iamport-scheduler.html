@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../lib/fx.js"></script>
+  <title>아임포트 결제 누락 처리 스케쥴러</title>
+</head>
+<body>
+## 시간을 이터러블로 다루기
+4. 아임포트 결제 누락 처리 스케쥴러 만들기
+<script>
+const Impt = {
+  payments: {
+    1: [
+      { imp_id: 11, order_id: 1, amount: 15_000 },
+      { imp_id: 12, order_id: 2, amount: 25_000 },
+      { imp_id: 13, order_id: 3, amount: 10_000 },
+    ],
+    2: [
+      { imp_id: 14, order_id: 4, amount: 25_000 },
+      { imp_id: 15, order_id: 5, amount: 45_000 },
+      { imp_id: 16, order_id: 6, amount: 15_000 },
+    ],
+    3: [
+      { imp_id: 17, order_id: 7, amount: 20_000 },
+      { imp_id: 18, order_id: 8, amount: 30_000 },
+    ],
+    4: [],
+    5: [],
+    // ...
+  },
+  getPayments: page => {
+    console.log(`http://..?page=${page}`);
+    return _.delay(1000 * 2, Impt.payments[page]);
+  },
+  cancelPayment: imp_id => Promise.resolve(`${imp_id}: 취소완료`)
+};
+
+const DB = {
+  getOrders: ids => _.delay(100, [
+    { id: 1 },
+    { id: 3 },
+    { id: 7 },
+  ])
+};
+
+async function job() {
+  const payments = _.go(
+    L.range(1, Infinity),
+    L.map(Impt.getPayments),
+    L.takeWhile(({ length }) => length),
+    _.each(console.log));
+}
+job();
+
+</script> 
+</body>
+</html>
