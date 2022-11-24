@@ -33,7 +33,7 @@ const Impt = {
   },
   getPayments: page => {
     console.log(`http://..?page=${page}`);
-    return _.delay(1000 * 2, Impt.payments[page]);
+    return _.delay(1000, Impt.payments[page]);
   },
   cancelPayment: imp_id => Promise.resolve(`${imp_id}: 취소완료`)
 };
@@ -47,11 +47,16 @@ const DB = {
 };
 
 async function job() {
-  const payments = _.go(
+  // 결제모듈 측 결제된 payments를 가져온다.
+  // 결제 데이터가 있을 때까지 page 단위로 가져와서 하나로 합친다. 
+  const payments = await _.go(
     L.range(1, Infinity),
     L.map(Impt.getPayments),
     L.takeUntil(({ length }) => length < 3),
-    _.each(console.log));
+    _.flat);
+
+  // 이 시점에는 Promise를 풀어낸 상태로 console.log를 할 수 있게 된다.
+  console.log(payments);
 }
 job();
 
