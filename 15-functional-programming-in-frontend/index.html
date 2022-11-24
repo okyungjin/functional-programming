@@ -84,20 +84,6 @@ C.takeAllWithLimit = _.curry((limit = Infinity, iter) => _.go(
   L.map(C.takeAll)
 ));
 
-_.go(
-  Images.fetch(),
-  Images.tmpl,
-  $.el,
-  $.append($.qs('body')),
-  Images.loader(12),
-  $.findAll('.remove'),
-  $.on('click', async ({ currentTarget: ct }) => // 객체를 깨서 레퍼런스를 유지하도록 만든다!
-    await Ui.confirm('정말 삭제하시겠습니까?') &&
-      _.go(
-        ct,
-        $.closest('.image'),
-        $.remove)));
-
 const Ui = {};
 
 Ui.message = _.curry((btns, msg) => new Promise(resolve => _.go(
@@ -133,6 +119,26 @@ Ui.confirm = Ui.message([
 Ui.alert = Ui.message([
   { name: '확인', type: 'ok', value: true }
 ]);
+
+Ui.remover = (btnSel, targetSel, before = _ => _, after = _ => _) => _.tap(
+  $.findAll(btnSel),
+  $.on('click', async ({ currentTarget: ct }) => // 객체를 깨서 레퍼런스를 유지하도록 만든다!
+    await Ui.confirm('정말 삭제하시겠습니까?') &&
+      _.go(
+        ct,
+        $.closest(targetSel),
+        _.tap(before),
+        $.remove),
+        _.tap(after))
+);
+
+_.go(
+  Images.fetch(),
+  Images.tmpl,
+  $.el,
+  $.append($.qs('body')),
+  Ui.remover('.remove', '.image', _ => console.log('서버 통신')),
+  Images.loader(12));
 </script>
 </body>
 </html>
