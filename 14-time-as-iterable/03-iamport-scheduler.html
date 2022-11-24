@@ -74,8 +74,10 @@ async function job() {
     L.map(Impt.cancelPayment),
     _.each(console.log));
 }
-job();
 
+(function recur() {
+  job().then(recur);
+}) ();
 </script> 
 </body>
 </html>
