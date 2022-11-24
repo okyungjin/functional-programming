@@ -33,7 +33,7 @@ const Impt = {
   },
   getPayments: page => {
     console.log(`http://..?page=${page}`);
-    return _.delay(100, Impt.payments[page]);
+    return _.delay(1000 * 1, Impt.payments[page]);
   },
   cancelPayment: imp_id => Promise.resolve(`${imp_id}: 취소완료`)
 };
@@ -75,8 +75,13 @@ async function job() {
     _.each(console.log));
 }
 
+// 8초에 한 번만 한다.
+// 만일 job이 8초보다 더 걸리면 job이 끝날 때까지
 (function recur() {
-  job().then(recur);
+  Promise.all([
+    _.delay(8000, undefined),
+    job()
+  ]).then(recur);
 }) ();
 </script> 
 </body>
