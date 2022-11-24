@@ -33,7 +33,7 @@ const Impt = {
   },
   getPayments: page => {
     console.log(`http://..?page=${page}`);
-    return _.delay(1000, Impt.payments[page]);
+    return _.delay(100, Impt.payments[page]);
   },
   cancelPayment: imp_id => Promise.resolve(`${imp_id}: 취소완료`)
 };
@@ -56,7 +56,16 @@ async function job() {
     _.flat);
 
   // 이 시점에는 Promise를 풀어낸 상태로 console.log를 할 수 있게 된다.
-  console.log(payments);
+  // console.log(payments);
+
+  // 결제가 실제로 완료된 가맹점 측 주문서 id들을 뽑는다.
+  const order_ids = await _.go(
+    payments,
+    _.map(p => p.order_id),
+    DB.getOrders,
+    _.map(({id}) => id));
+
+  console.log(order_ids);
 }
 job();
 
