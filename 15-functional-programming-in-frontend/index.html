@@ -22,6 +22,8 @@ $.closest = _.curry((sel, el) => el.closest(sel));
 
 $.append = _.curry((parent, child) => parent.appendChild(child));
 
+$.remove = el => el.parentNode.removeChild(el);
+
 $.el = html => {
   const wrap = document.createElement('div');
   wrap.innerHTML = html;
@@ -63,8 +65,7 @@ _.go(
   _.each(el => el.addEventListener('click', e => _.go(
     e.currentTarget,
     $.closest('.image'),
-    el => el.parentNode.removeChild(el),
-    console.log
+    $.remove,
   ))));
 </script>
 </body>
