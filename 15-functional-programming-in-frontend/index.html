@@ -18,7 +18,7 @@ $.qsa = (sel, parent = document) => parent.querySelectorAll(sel);
 $.find = _.curry($.qs);
 $.findAll = _.curry($.qsa);
 
-$.closest = (sel, el) => el.closest(sel);
+$.closest = _.curry((sel, el) => el.closest(sel));
 
 $.append = _.curry((parent, child) => parent.appendChild(child));
 
@@ -62,7 +62,7 @@ _.go(
   $.findAll('.remove'),
   _.each(el => el.addEventListener('click', e => _.go(
     e.currentTarget,
-    el => $.closest('.image', el),
+    $.closest('.image'),
     el => el.parentNode.removeChild(el),
     console.log
   ))));
