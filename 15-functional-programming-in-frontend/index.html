@@ -65,10 +65,45 @@ _.go(
   $.el,
   $.append($.qs('body')),
   $.findAll('.remove'),
-  $.on('click', e => _.go(
-    e.currentTarget,
-    $.closest('.image'),
-    $.remove)));
+  $.on('click', async ({ currentTarget: ct }) => { // 객체를 깨서 레퍼런스를 유지하도록 만든다!
+    if (await Ui.confirm('정말 삭제하시겠습니까?')) {
+      _.go(
+        ct,
+        $.closest('.image'),
+        $.remove);
+    }
+  }));
+
+const Ui = {};
+
+Ui.confirm = msg => new Promise(resolve => _.go(
+  `
+  <div class="confirm">
+    <div class="body">
+      <div class="msg">${msg}</div>
+      <div class="buttons">
+        <button type="button" class="cancel">취소</button>
+        <button type="button" class="ok">확인</button>
+      </div>
+    </div>
+  </div>
+  `,
+  $.el,
+  $.append($.qs('body')),
+  _.tap(
+    $.find('.ok'),
+    $.on('click', e => _.go(
+      e.currentTarget,
+      $.closest('.confirm'),
+      $.remove,
+      _ => resolve(true)))),
+  _.tap(
+    $.find('.cancel'),
+    $.on('click', e => _.go(
+      e.currentTarget,
+      $.closest('.confirm'),
+      $.remove,
+      _ => resolve(false))))));
 </script>
 </body>
 </html>
