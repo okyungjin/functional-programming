@@ -50,7 +50,7 @@ async function job() {
   const payments = _.go(
     L.range(1, Infinity),
     L.map(Impt.getPayments),
-    L.takeWhile(({ length }) => length),
+    L.takeUntil(({ length }) => length < 3),
     _.each(console.log));
 }
 job();
